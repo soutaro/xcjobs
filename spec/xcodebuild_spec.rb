@@ -518,7 +518,7 @@ describe XCJobs::Xcodebuild do
 
           it 'executes the appropriate commands' do
             subject.invoke
-            expect(@commands).to eq ['xcodebuild -exportArchive -archivePath build/Example -exportFormat IPA -exportPath build/Example.ipa -exportProvisioningProfile Ad Hoc Provisioning Profile -exportSigningIdentity iPhone Distribution: kishikawa katsumi']
+            expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist options.plist -archivePath build/Example -exportFormat IPA -exportPath build/Example.ipa -exportProvisioningProfile Ad Hoc Provisioning Profile -exportSigningIdentity iPhone Distribution: kishikawa katsumi']
           end
         end
       end
@@ -561,7 +561,7 @@ describe XCJobs::Xcodebuild do
 
           it 'executes the appropriate commands' do
             subject.invoke
-            expect(@commands).to eq ['xcodebuild -exportArchive -archivePath build/Example -exportFormat IPA -exportPath build/Example.ipa -exportProvisioningProfile Ad Hoc Provisioning Profile -exportSigningIdentity iPhone Distribution: kishikawa katsumi']
+            expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist options.plist -archivePath build/Example -exportFormat IPA -exportPath build/Example.ipa -exportProvisioningProfile Ad Hoc Provisioning Profile -exportSigningIdentity iPhone Distribution: kishikawa katsumi']
           end
         end
       end
@@ -604,8 +604,55 @@ describe XCJobs::Xcodebuild do
 
           it 'executes the appropriate commands' do
             subject.invoke
-            expect(@commands).to eq ['xcodebuild -exportArchive -archivePath build/Example -exportFormat PKG -exportPath build/Example.pkg -exportSigningIdentity Developer ID Application -exportInstallerIdentity Developer ID Installer']
+            expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist options.plist -archivePath build/Example -exportFormat PKG -exportPath build/Example.pkg -exportSigningIdentity Developer ID Application -exportInstallerIdentity Developer ID Installer']
           end
+        end
+      end
+    end
+
+    describe 'options_plist' do
+      describe "default value" do
+        let!(:task) do
+          XCJobs::Export.new do |t|
+            # defines nothing
+          end
+        end
+
+        subject { Rake.application['build:export'] }
+
+        it 'generates -exportOptionsPlist option with options.plist' do
+          subject.invoke
+          expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist options.plist -exportFormat IPA']
+        end
+      end
+
+      describe "with options_plist attribute specified" do
+        let!(:task) do
+          XCJobs::Export.new do |t|
+            t.options_plist = 'super-options.plist'
+          end
+        end
+
+        subject { Rake.application['build:export'] }
+
+        it 'generates -exportOptionsPlist option with given options_plist' do
+          subject.invoke
+          expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist super-options.plist -exportFormat IPA']
+        end
+      end
+
+      describe "with options_plist attribute of falsy value" do
+        let!(:task) do
+          XCJobs::Export.new do |t|
+            t.options_plist = false
+          end
+        end
+
+        subject { Rake.application['build:export'] }
+
+        it 'skips -exportOptionsPlist if options_plist is falsy' do
+          subject.invoke
+          expect(@commands).to eq ['xcodebuild -exportArchive -exportFormat IPA']
         end
       end
     end
