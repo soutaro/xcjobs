@@ -518,7 +518,7 @@ describe XCJobs::Xcodebuild do
 
           it 'executes the appropriate commands' do
             subject.invoke
-            expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist options.plist -archivePath build/Example -exportFormat IPA -exportPath build/Example.ipa -exportProvisioningProfile Ad Hoc Provisioning Profile -exportSigningIdentity iPhone Distribution: kishikawa katsumi']
+            expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist options.plist -archivePath build/Example -exportPath build/Example.ipa -exportProvisioningProfile Ad Hoc Provisioning Profile -exportSigningIdentity iPhone Distribution: kishikawa katsumi']
           end
         end
       end
@@ -561,7 +561,7 @@ describe XCJobs::Xcodebuild do
 
           it 'executes the appropriate commands' do
             subject.invoke
-            expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist options.plist -archivePath build/Example -exportFormat IPA -exportPath build/Example.ipa -exportProvisioningProfile Ad Hoc Provisioning Profile -exportSigningIdentity iPhone Distribution: kishikawa katsumi']
+            expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist options.plist -archivePath build/Example -exportPath build/Example.ipa -exportProvisioningProfile Ad Hoc Provisioning Profile -exportSigningIdentity iPhone Distribution: kishikawa katsumi']
           end
         end
       end
@@ -604,7 +604,7 @@ describe XCJobs::Xcodebuild do
 
           it 'executes the appropriate commands' do
             subject.invoke
-            expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist options.plist -archivePath build/Example -exportFormat PKG -exportPath build/Example.pkg -exportSigningIdentity Developer ID Application -exportInstallerIdentity Developer ID Installer']
+            expect(@commands).to eq ['xcodebuild -exportArchive -archivePath build/Example -exportFormat PKG -exportPath build/Example.pkg -exportSigningIdentity Developer ID Application -exportInstallerIdentity Developer ID Installer']
           end
         end
       end
@@ -622,7 +622,7 @@ describe XCJobs::Xcodebuild do
 
         it 'generates -exportOptionsPlist option with options.plist' do
           subject.invoke
-          expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist options.plist -exportFormat IPA']
+          expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist options.plist']
         end
       end
 
@@ -637,7 +637,7 @@ describe XCJobs::Xcodebuild do
 
         it 'generates -exportOptionsPlist option with given options_plist' do
           subject.invoke
-          expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist super-options.plist -exportFormat IPA']
+          expect(@commands).to eq ['xcodebuild -exportArchive -exportOptionsPlist super-options.plist']
         end
       end
 
@@ -652,7 +652,7 @@ describe XCJobs::Xcodebuild do
 
         it 'skips -exportOptionsPlist if options_plist is falsy' do
           subject.invoke
-          expect(@commands).to eq ['xcodebuild -exportArchive -exportFormat IPA']
+          expect(@commands).to eq ['xcodebuild -exportArchive']
         end
       end
     end

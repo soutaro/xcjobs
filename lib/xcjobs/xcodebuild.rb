@@ -390,9 +390,9 @@ module XCJobs
 
     def options
       [].tap do |opts|
-        opts.concat(['-exportOptionsPlist', options_plist]) if options_plist
+        opts.concat(['-exportOptionsPlist', options_plist]) if options_plist && export_format == 'IPA'
         opts.concat(['-archivePath', archive_path]) if archive_path
-        opts.concat(['-exportFormat', export_format])  if export_format
+        opts.concat(['-exportFormat', export_format])  if export_format != 'IPA'
         opts.concat(['-exportPath', export_path]) if export_path
         opts.concat(['-exportProvisioningProfile', export_provisioning_profile]) if export_provisioning_profile
         opts.concat(['-exportSigningIdentity', export_signing_identity]) if export_signing_identity
